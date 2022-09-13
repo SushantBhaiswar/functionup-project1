@@ -30,9 +30,9 @@ const createblogdocument = async function (req, res) {
             if (typeof (isDeleted) !== "boolean")
                 return res.status(400).send({ status: false, msg: "is isDeleted must be boolean" })
         }
-        let a = typeof (isPublished)
+        
         if (isPublished) {
-            if (a !== "boolean")
+            if (typeof (isPublished) !== "boolean")
                 return res.status(400).send({ status: false, msg: "is Published must be boolean" })
         }
 
@@ -147,7 +147,7 @@ const deleteBlogParam = async function (req, res) {
 
         if (updateddata.modifiedCount == 0) return res.status(404).send({ status: true, msg: "no document found" })
 
-        return res.status(200).send({ status: true, msg: updateddata })
+        return res.status(200).send({ status: true, msg: "data deleted successfully" })
     }
     catch (err) {
         res.status(500).send({
@@ -197,6 +197,7 @@ const loginUser = async function (req, res) {
         if (!validfun.validation.checkbody(req.body)) return res.status(400).send({ status: false, message: "Data must be present" })
         if (!email) return res.status(400).send({ status: false, message: "EmailId is mandatory" })
         if (!password) return res.status(400).send({ status: false, message: "Password is mandatory" })
+        
         let authorCheck = await authormodel.findOne({ email: email, password: password });
         if (!authorCheck) return res.status(401).send({ status: false, message: "EmailId or password is incorrect" })
         let token = jwt.sign(
